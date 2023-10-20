@@ -1,0 +1,22 @@
+[project]
+name = "python_project"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "", email = ""},
+]
+dependencies = [
+    "flet>=0.10.3",
+    "pyinstaller>=4.5.1",
+    "pokebase>=1.3.0",
+]
+requires-python = ">=3.8"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.pdm.scripts]
+start = "python3 src/python_project/__init__.py"
