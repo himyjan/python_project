@@ -111,6 +111,7 @@ def main(page: ft.Page):
     csv_data = pd.read_csv('./src/python_project/109_165-9.csv')
     json_data = pd.read_json('./src/python_project/10909.json')
     fig, ax = plt.subplots(2, 1)
+    plt.subplots_adjust(hspace=0.5)  # Adjust the value as needed
     ax = show_bar(ax, csv_data, json_data)
     simpledt_dt = show_data_list(csv_data.head(5))
 
@@ -118,11 +119,13 @@ def main(page: ft.Page):
         # page.views.clear()
         pages = [
             (
-                dict(icon=icons.LANDSCAPE_OUTLINED, selected_icon=icons.LANDSCAPE, label="Menu in landscape"),
-                create_page(
-                    "Menu in landscape",
-                    "Menu in landscape is by default shown, side by side with the main content, but can be "
-                    "hidden with the menu button.",
+                dict(icon=icons.LANDSCAPE_OUTLINED, selected_icon=icons.LANDSCAPE, label="barChart"),
+                Row(
+                    [
+                        MatplotlibChart(fig, expand=True),
+                        # simpledt_dt
+                    ],
+                    expand=True
                 ),
             ),
             (
