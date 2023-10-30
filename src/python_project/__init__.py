@@ -77,7 +77,7 @@ def show_bar(ax, csv_data, json_data):
     
     data_list = json_data.head(10).to_numpy()
     data_list_sorted = data_list[data_list[:, 2].argsort()]
-    print(data_list_sorted)
+
     ax[1].plot(data_list_sorted[:,1].tolist(),data_list_sorted[:,2].tolist())
     ax[1].set_xlabel('人口密度')
     ax[1].set_title('各鄉鎮市區人口密度')
@@ -193,7 +193,20 @@ def main(page: ft.Page):
             ),
         ]
 
-        menu_layout = ResponsiveMenuLayout(page, pages)
+        # 在頁面加載時檢查是否已經存在 ResponsiveMenuLayout 的實例
+        existing_menu_layout = None
+        for control in page.controls:
+            if isinstance(control, ResponsiveMenuLayout):
+                existing_menu_layout = control
+                break
+
+        if existing_menu_layout is None:
+            # 如果不存在 ResponsiveMenuLayout 的實例，則創建一個新的實例並添加到頁面中
+            menu_layout = ResponsiveMenuLayout(page, pages)
+            page.add(menu_layout)
+        else:
+            # 如果已經存在 ResponsiveMenuLayout 的實例，則使用現有的實例
+            menu_layout = existing_menu_layout
 
         page.appbar.actions = [
             Row(
@@ -212,7 +225,7 @@ def main(page: ft.Page):
 
         page.add(menu_layout)
 
-        menu_button.on_click = lambda e: menu_layout.toggle_navigation()
+        # menu_button.on_click = lambda e: menu_layout.toggle_navigation()
 
         # page.views.append(
         #     ft.View(
