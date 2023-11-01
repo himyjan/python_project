@@ -20,6 +20,7 @@ from flet import colors
 from flet import icons
 
 matplotlib.use("svg")
+sns.set_theme(style="whitegrid")
 
 # https://colab.research.google.com/github/willismax/matplotlib_show_chinese_in_colab/blob/master/matplotlib_show_chinese_in_colab.ipynb#scrollTo=RfR0uymWF3cB
 import os.path
@@ -131,8 +132,8 @@ def main(page: ft.Page):
                 dict(icon=icons.LANDSCAPE_OUTLINED, selected_icon=icons.LANDSCAPE, label="bar chart"),
                 Row(
                     [
-                        sns.lineplot(data=csv_data.head(), palette="tab10", linewidth=2.5)
-                        # MatplotlibChart(fig, expand=True),
+                        MatplotlibChart(fig, expand=True),
+                        ft.TextButton("Button with 'click' event", on_click=button_clicked, data=csv_data)
                         # simpledt_dt
                     ],
                     expand=True
@@ -240,6 +241,9 @@ def main(page: ft.Page):
     def toggle_menu_width(menu: ResponsiveMenuLayout):
         menu.menu_extended = not menu.menu_extended
         menu.page.update()
+
+    def button_clicked(e, csv_data):
+        sns.lineplot(data=csv_data.head(), palette="tab10", linewidth=2.5)
 
     page.on_route_change = route_change
     page.on_view_pop = view_pop
