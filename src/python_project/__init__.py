@@ -1,6 +1,7 @@
 # https://github.com/flet-dev/examples/blob/main/python/controls/charts-matplotlib/mpl-finance.py
 import matplotlib
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 import flet as ft
 from flet.matplotlib_chart import MatplotlibChart
@@ -75,10 +76,18 @@ def show_bar(ax, csv_data, json_data):
     # ax.tight_layout()
     # ax.show()
     
-    data_list = json_data.head(10).to_numpy()
+    data_list = json_data.to_numpy()
     data_list_sorted = data_list[data_list[:, 2].argsort()]
 
-    ax[1].plot(data_list_sorted[:,1].tolist(),data_list_sorted[:,2].tolist())
+    scatter = ax[1].scatter(data_list_sorted[:,1].tolist(),data_list_sorted[:,2].tolist())
+
+    # produce a legend with the unique colors from the scatter
+    legend1 = ax[1].legend(*scatter.legend_elements(), loc="lower left", title="Classes")
+    ax[1].add_artist(legend1)
+
+    # produce a legend with a cross section of sizes from the scatter
+    handles, labels = scatter.legend_elements(prop="sizes", alpha=0.6)
+    legend2 = ax[1].legend(handles, labels, loc="upper right", title="Sizes")
     ax[1].set_xlabel('人口密度')
     ax[1].set_title('各鄉鎮市區人口密度')
     ax[1].grid(True)
@@ -119,64 +128,14 @@ def main(page: ft.Page):
         # page.views.clear()
         pages = [
             (
-                dict(icon=icons.LANDSCAPE_OUTLINED, selected_icon=icons.LANDSCAPE, label="barChart"),
+                dict(icon=icons.LANDSCAPE_OUTLINED, selected_icon=icons.LANDSCAPE, label="bar chart"),
                 Row(
                     [
-                        MatplotlibChart(fig, expand=True),
+                        sns.lineplot(data=csv_data.head(), palette="tab10", linewidth=2.5)
+                        # MatplotlibChart(fig, expand=True),
                         # simpledt_dt
                     ],
                     expand=True
-                ),
-            ),
-            (
-                dict(icon=icons.PORTRAIT_OUTLINED, selected_icon=icons.PORTRAIT, label="Menu in portrait"),
-                create_page(
-                    "Menu in portrait",
-                    "Menu in portrait is mainly expected to be used on a smaller mobile device."
-                    "\n\n"
-                    "The menu is by default hidden, and when shown with the menu button it is placed on top of the main "
-                    "content."
-                    "\n\n"
-                    "In addition to the menu button, menu can be dismissed by a tap/click on the main content area.",
-                ),
-            ),
-            (
-                dict(
-                    icon=icons.INSERT_EMOTICON_OUTLINED, selected_icon=icons.INSERT_EMOTICON, label="Minimize to icons"
-                ),
-                create_page(
-                    "Minimize to icons",
-                    "ResponsiveMenuLayout has a parameter minimize_to_icons. "
-                    "Set it to True and the menu is shown as icons only, when normally it would be hidden.\n"
-                    "\n\n"
-                    "Try this with the 'Minimize to icons' toggle in the top bar."
-                    "\n\n"
-                    "There are also landscape_minimize_to_icons and portrait_minimize_to_icons properties that you can "
-                    "use to set this property differently in each orientation.",
-                ),
-            ),
-            (
-                dict(icon=icons.COMPARE_ARROWS_OUTLINED, selected_icon=icons.COMPARE_ARROWS, label="Menu width"),
-                create_page(
-                    "Menu width",
-                    "ResponsiveMenuLayout has a parameter manu_extended. "
-                    "Set it to False to place menu labels under the icons instead of beside them."
-                    "\n\n"
-                    "Try this with the 'Menu width' toggle in the top bar.",
-                ),
-            ),
-            (
-                dict(icon=icons.ROUTE_OUTLINED, selected_icon=icons.ROUTE, label="Route support", route="custom-route"),
-                create_page(
-                    "Route support",
-                    "ResponsiveMenuLayout has a parameter support_routes, which is True by default. "
-                    "\n\n"
-                    "Routes are useful only in the web, where the currently selected page is shown in the url, "
-                    "and you can open the app directly on a specific page with the right url."
-                    "\n\n"
-                    "You can specify a route explicitly with a 'route' item in the menu dict (see this page in code). "
-                    "If you do not specify the route, a slugified version of the page label is used "
-                    "('Menu width' becomes 'menu-width').",
                 ),
             ),
             (
