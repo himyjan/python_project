@@ -242,7 +242,7 @@ def main(page: ft.Page):
         menu.menu_extended = not menu.menu_extended
         menu.page.update()
 
-    def button_clicked(e, csv_data):
+    def button_clicked(e):
         sns.lineplot(data=csv_data.head(), palette="tab10", linewidth=2.5)
 
     page.on_route_change = route_change
