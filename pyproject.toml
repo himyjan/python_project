@@ -15,6 +15,7 @@ dependencies = [
     "plotly>=5.18.0",
     "simpledatatable>=0.3.4",
     "Django>=4.2.7",
+    "django-extensions>=3.2.3",
 ]
 requires-python = ">=3.8"
 readme = "README.md"
@@ -25,4 +26,5 @@ requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [tool.pdm.scripts]
-start = "python3 src/python_project/__init__.py"
+start = "python3 src/python_project_django/manage.py runserver"
+migrate = "python3 src/python_project_django/manage.py migrate"
