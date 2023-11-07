@@ -16,6 +16,7 @@ dependencies = [
     "simpledatatable>=0.3.4",
     "Django>=4.2.7",
     "django-extensions>=3.2.3",
+    "django-import-export>=3.3.1",
 ]
 requires-python = ">=3.8"
 readme = "README.md"
@@ -27,4 +28,4 @@ build-backend = "pdm.backend"
 
 [tool.pdm.scripts]
 start = "python3 src/python_project_django/manage.py runserver"
-migrate = "python3 src/python_project_django/manage.py migrate"
+migrate = {shell = "python3 src/python_project_django/manage.py makemigrations; python3 src/python_project_django/manage.py migrate" }
